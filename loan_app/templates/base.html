@@ -1,0 +1,175 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html lang="zxx">
+
+<head>
+	<title>Loan Management System</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+
+	<script>
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
+
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+
+	<!-- Bootstrap Core CSS -->
+	<link href="{% static 'css/bootstrap.css' %}" rel='stylesheet' type='text/css' />
+	<link href="{% static 'css/style.css' %}" rel='stylesheet' type='text/css' />
+	<!-- pop up box -->
+	<link href="{% static 'css/popuo-box.css' %}" rel="stylesheet" type="text/css" media="all" />
+	<!-- font-awesome icons -->
+	<link href="{% static 'css/fontawesome-all.min.css' %}" rel="stylesheet">
+	<!-- //Custom Theme files -->
+	<!-- online fonts -->
+	<!-- titles -->
+	<link href="//fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,800,900" rel="stylesheet">
+	<!-- body -->
+	<link href="//fonts.googleapis.com/css?family=Poppins:400,500,600,700,800" rel="stylesheet">
+</head>
+
+{% block css %}
+
+{% endblock %}
+
+<body>
+	
+	<!-- header -->
+	<header>
+		<div class="container">
+			<nav class="navbar navbar-expand-lg navbar-light">
+				<h1>
+					<a class="navbar-brand text-capitalize" href="{% url 'loan_app:index' %}">
+						LOANPAY
+					</a>
+				</h1>
+
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav text-center  ml-lg-auto">
+						<li class="nav-item mr-3">
+							<a class="nav-link" href="{% url 'loan_app:index' %}">Home
+							</a>
+						</li>
+						<li class="nav-item  mr-3">
+							<a class="nav-link" href="{% url 'loan_app:about' %}">About</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'loan_app:contact' %}">contact</a>
+						</li>
+                        {% if user.is_authenticated %}
+                        <li class="nav-item">
+							<a class="nav-link" href="{% url 'loan_app:dashboard' %}">Dashboard</a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'loan_app:logout' %}">Logout</a>
+						</li>
+                        {% else %}
+                        <li class="nav-item">
+							<a class="nav-link" href="{% url 'loan_app:login' %}">Login</a>
+						</li>
+                        {% endif %}
+					</ul>
+				</div>
+			</nav>
+		</div>
+	</header>
+	<!-- //header -->
+
+    {% block body %}
+
+    {% endblock %}
+
+
+	<!---->
+	<div class="copyright py-3">
+		<div class="container">
+			<div class="copyrighttop">
+				<ul>
+					<li>
+						<h4>Follow us on:</h4>
+					</li>
+					<li>
+						<a class="facebook" href="#">
+							<i class="fab fa-facebook-f"></i>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="copyrightbottom">
+				<p>© 2022 LOANPAY. All Rights Reserved | Kararn Arora
+				</p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+
+<!-- js-->
+	<script src="{% static 'js/jquery-2.2.3.min.js' %}"></script>
+<!-- js-->
+<!-- Banner Responsiveslides -->
+	<script src="{% static 'js/responsiveslides.min.js' %}"></script>
+	<script>
+		// You can also use "$(window).load(function() {"
+		$(function () {
+			// Slideshow 4
+			$("#slider3").responsiveSlides({
+				auto: true,
+				pager: true,
+				nav: false,
+				speed: 500,
+				namespace: "callbacks",
+				before: function () {
+					$('.events').append("<li>before event fired.</li>");
+				},
+				after: function () {
+					$('.events').append("<li>after event fired.</li>");
+				}
+			});
+
+		});
+	</script>
+<!-- // Banner Responsiveslides -->
+<!-- stats -->
+	<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+	<script src="{% static 'js/jquery.countup.js' %}"></script>
+		<script>
+			$('.counter').countUp();
+		</script>
+<!-- //stats -->
+<!--pop-up-box -->
+	<script src="{% static 'js/jquery.magnific-popup.js' %}"></script>
+	<script>
+		$(document).ready(function () {
+			$('.popup-with-zoom-anim').magnificPopup({
+				type: 'inline',
+				fixedContentPos: false,
+				fixedBgPos: true,
+				overflowY: 'auto',
+				closeBtnInside: true,
+				preloader: false,
+				midClick: true,
+				removalDelay: 300,
+				mainClass: 'my-mfp-zoom-in'
+			});
+		});
+	</script>
+	<!-- //pop-up-box -->
+	<!-- Bootstrap Core JavaScript -->
+	<script src="{% static 'js/bootstrap.js' %}">
+	</script>
+	<!-- //Bootstrap Core JavaScript -->
+
+    <script>
+        var message_ele = document.getElementById("message");
+        setTimeout(function() {
+            $(message_ele).fadeOut('slow');
+        }, 3000);
+
+    </script>
+</body>
+</html>

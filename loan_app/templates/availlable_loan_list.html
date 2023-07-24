@@ -1,0 +1,162 @@
+{% include 'dashboard_base.html' %}
+{% load static %}
+
+{% block css %}
+<style>
+.lead{
+    color:red;
+    font-weight: bold;
+}
+.value{
+    color:green;
+    font-weight: bold;
+}
+.custom{
+    color:darkblue;
+}
+.chart-container{
+    margin: auto;
+}
+
+</style>
+{% endblock %}
+
+{% block body %}
+
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-info alert-dismissible fade show" style="padding-top: 10px;" role="alert" id="message">
+        {{ message }}
+        <button type="button" class="close" style="padding-top: 10px;" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+{% endif %}
+
+<div class="container">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between">
+        <h1 class="h3 mb-0 text-gray-800 mt-4 mb-4">Available Loans</h1>
+    </div>
+</div>
+
+    <div class="container">
+    <table class="table table-hover" id="myTable">
+        <thead>
+        <tr>
+            <th scope="col">Sno</th>
+            <th scope="col">Name</th>
+            <th scope="col">Max. Amount</th>
+            <th scope="col">ROI</th>
+            <th scope="col">Max. Duration</th>
+            <th scope="col">Category</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in loans %}
+        <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{i.loan_name}}</td>
+            <td>{{i.max_loan_amount}}</td>
+            <td>{{i.loan_roi}}</td>
+            <td>{{i.max_loan_duration}}</td>
+            <td>{{i.loan_category}}</td>
+            <td>
+                <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#see-list-{{i.id}}">
+                    View
+                </button>
+
+                <!-- Modal -->
+                <div class="modal  fade" id="see-list-{{i.id}}" tabindex="-1"
+                    aria-labelledby="exampsee-list-{{i.id}}" aria-hidden="true">
+                    <div class="modal-dialog modal-md  modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampsee-list-{{i.id}}">Name: {{i.loan_name}}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <div class="row">
+                                            <div class="col-4">Description:</div>
+                                            <div class="col-8">{{i.loan_desc}}</div>
+                                        </div>
+                                    </div>   
+
+                                    <div class="col-12 mb-3">
+                                        <div class="row">
+                                            <div class="col-4">Max. Amount:</div>
+                                            <div class="col-8">{{i.max_loan_amount}}</div>
+                                        </div>
+                                    </div> 
+
+                                    <div class="col-12 mb-3">
+                                        <div class="row">
+                                            <div class="col-4">ROI:</div>
+                                            <div class="col-8">{{i.loan_roi}}</div>
+                                        </div>
+                                    </div> 
+
+                                    <div class="col-12 mb-3">
+                                        <div class="row">
+                                            <div class="col-4">Max. Duration:</div>
+                                            <div class="col-8">{{i.max_loan_duration}}</div>
+                                        </div>
+                                    </div> 
+
+                                    <div class="col-12 mb-3">
+                                        <div class="row">
+                                            <div class="col-4">Category:</div>
+                                            <div class="col-8">{{i.loan_category}}</div>
+                                        </div>
+                                    </div> 
+
+                                    <div class="col-12 mb-3">
+                                        <div class="row">
+                                            <div class="col-4">Need Collateral:</div>
+                                            <div class="col-8">{% if i.need_security %}
+                                                Yes
+                                            {% else %}
+                                                NO
+                                            {% endif %}
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if user.is_superuser %}
+                <a href="{% url 'loan_app:update_loan' i.id %}" class="btn btn-info">Edit</a>
+                <a href="{% url 'loan_app:delete_loan' i.id %}" class="btn btn-danger">Delete</a>
+                {% else %}
+                <a href="{% url 'loan_app:apply_loan' i.id %}" class="btn btn-info">Apply</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script>
+    $(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+</script>
+{% endblock %}

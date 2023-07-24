@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block body %}
+
+	<!-- about -->
+	<section class="welcome py-5">
+		<div class="container py-md-4 mt-md-3">
+			<h2 class="heading-agileinfo">About Us <span>Speed Up the Loan Process</span></h2>
+			<span class="w3-line black"></span>
+			<div class="row about-tp mt-md-5 pt-5">
+				<div class="col-lg-6 welcome-left">
+					<h3>Welcome</h3>
+					<h4>Loanpay is a dream that was started by Mr. Pulkit Arora, a first-generation entrepreneur.</h4>
+					<p>To be the world’s most trusted loan providers,thereby guaranteeing Trust, Confidence and Customer Delight.</p>
+				</div>
+				<div class="col-lg-6 welcome-right">
+					<div class="welcome-right-top">
+						<img src="{% static 'images/g1.jpg' %}" alt="" class="img-fluid">
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- //about -->
+
+{% endblock %}

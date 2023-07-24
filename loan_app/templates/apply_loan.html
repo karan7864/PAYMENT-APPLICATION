@@ -1,0 +1,151 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+
+{% block body %}
+
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-info mt-0 mb-0 alert-dismissible fade show" style="padding-top: 10px;" role="alert" id="message">
+        {{ message }}
+        <button type="button" class="close" style="padding-top: 10px;" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+{% endif %}
+
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between">
+        <h1 class="h3 mb-0 text-gray-800 mt-4 mb-4">Loan Application Form</h1>
+    </div>
+
+    <div class="container">
+        <form action="#" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% for i in loans %}
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" required placeholder="Enter Full Name" name="full_name">
+            </div>
+
+            <div class="form-group">
+                <label for="contact">Contact No</label>
+                <input type="number" class="form-control" id="contact" required placeholder="Enter Contact No" name="contact_no">
+            </div>
+
+            <div class="form-group">
+                <label for="pan">PAN No</label>
+                <input type="text" class="form-control" id="pan" required placeholder="Enter PAN No" name="pan_no">
+            </div>
+
+            <div class="form-group">
+                <label for="aadhar">AADHAAR No</label>
+                <input type="number" class="form-control" id="aadhar" required placeholder="Enter AADHAAR Card No" name="aadhar_no">
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address" required placeholder="Enter Residential Address" name="residential_address">
+            </div>
+
+            <div class="form-group">
+                <label for="service">Service Type</label>
+                <input type="text" class="form-control" id="service" required placeholder="Enter Service Type" name="service_type">
+            </div>
+
+            <div class="form-group">
+                <label for="office_address">Official Address</label>
+                <input type="text" class="form-control" id="office_address" required placeholder="Enter Official Address" name="official_address">
+            </div>
+
+            <div class="form-group">
+                <label for="income">Annual Income (In Rs) </label>
+                <input type="number" class="form-control" id="income" required placeholder="Enter Annual Income" name="income">
+            </div>
+
+            <div class="form-group">
+                <label for="income">Existing Loan(If Any)</label>
+                <select class="form-control" required name="existing_loan">
+                    <option value="Yes">Yes</option>
+                    <option value="No" selected>No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="loan_type">Select Loan Type</label>
+                <input type="text" class="form-control" id="loan_applied_for" name="loan_applied_for" 
+                value="{{i.loan_name}}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="expected_amount">Expected Loan Amount</label>
+                <input type="number" class="form-control" id="expected_amount" required placeholder="Enter Expected Amount" name="expected_loan_amount" min="0" max="{{i.max_loan_amount}}">
+            </div>
+
+            <div class="form-group">
+                <label for="expected_tenure">Expected Tenure</label>
+                <input type="number" class="form-control" id="expected_tenure" required placeholder="Enter Expected Tenure (In Months)" name="expected_loan_tenure" min="0" max="{{i.max_loan_duration}}">
+            </div>
+
+            <div class="form-group">
+                <label for="profile_photo">Profile Photo</label>
+                <input type="file" class="form-control-file" id="profile_photo" name="profile_photo" required>
+            </div>
+
+            <div class="form-group">
+                <label for="pan_image">PAN Card Image</label>
+                <input type="file" class="form-control-file" id="pan_image" name="pan_image" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="aadhar_image">AADHAAR Card Image</label>
+                <input type="file" class="form-control-file" id="aadhar_image" name="aadhar_image" required>
+            </div>
+
+            <div class="form-group">
+                <label for="ac_no">Bank A/C Number</label>
+                <input type="number" class="form-control" id="ac_no" name="ac_no" required
+                placeholder="Bank A/C No where you want to recieve money">
+            </div>
+
+            <div class="form-group">
+                <label for="ac_name">Bank Name</label>
+                <input type="text" class="form-control" id="ac_name" name="ac_name" required
+                placeholder="Bank Name">
+            </div>
+
+            <div class="form-group">
+                <label for="ac_ifsc">Bank IFSCode</label>
+                <input type="text" class="form-control" id="ac_ifsc" name="ac_ifsc" required
+                placeholder="Bank IFSCode">
+            </div>
+
+            <div class="form-group">
+                <label for="remarks">Remarks</label>
+                <input type="text" class="form-control" id="remarks"  placeholder="Remarks" name="remarks">
+            </div>
+
+            {% if i.need_security %}
+            <div class="form-group">
+                <label for="security">Name</label>
+                <input type="text" class="form-control" id="security"  placeholder="Name of Collateral you want to give in place of Loan" name="security" required>
+            </div>
+
+            <div class="form-group">
+                <label for="security">Value</label>
+                <input type="number" class="form-control" id="coll_value"  placeholder="Collateral Value in (Rs)" required name="coll_value" min="0">
+            </div>
+            {% endif %}
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-danger">Reset</button>
+            {% endfor %}
+        </form>
+    </div>
+<div class="container">
+
+
+{% endblock %}

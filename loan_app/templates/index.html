@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block body %}
+
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-info mt-0 mb-0 alert-dismissible fade show" style="padding-top: 10px;" role="alert" id="message">
+        {{ message }}
+        <button type="button" class="close" style="padding-top: 10px;" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+{% endif %}
+
+
+
+	<!-- banner -->
+	<section class="banner">
+		<div class="callbacks_container">
+			<ul class="rslides" id="slider3">
+				<li>
+					<div class="slider-info bg1">
+						<div class="banner-text container">
+							<h4 class="movetxt text-left mb-3 agile-title text-capitalize">Loans - One Stop Solutions for All Your Financial Needs</h4>
+							</a>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</section>
+	<!-- //banner -->
+	<!-- Products -->
+	<section class="services py-5">
+		<div class="container py-md-4 mt-md-3"> 
+			<h2 class="heading-agileinfo">Loans We Offer</h2>
+			<span class="w3-line black"></span>
+			<div class="row inner_w3l_agile_grids-1 mt-md-5 pt-4">
+				{% for loan in loan_type %}
+				<div class="col-md-4 w3layouts_news_left_grid1 mb-4">
+					<div class="new_top h-100">
+						<a href="{% url 'loan_app:apply_loan' id=loan.id %}">
+ 							<img class="card-img-top" src="{{loan.loan_image}}"  alt="Loan Image">	
+						</a>
+						<h3 class="mb-3 mt-3">{{loan.loan_name}}</h3>
+						<p>{{loan.loan_desc}}</p>
+						<p>Upto Rs <strong>{{loan.max_loan_amount}}</strong> @ <strong>{{loan.loan_roi}}</strong> P.A</p>
+					</div>
+				</div>
+
+				{% endfor %}
+			</div>
+			
+	</div>   
+</section>
+<!-- //Products -->
+
+
+	<!-- stats -->
+<section class="stats pb-5">
+		<div class="container py-md-4 mt-md-3">
+			<div class="row inner_w3l_agile_grids-1">
+			<div class="col-lg-3 col-sm-6 w3layouts_stats_left w3_counter_grid">
+				<p class="counter">2022</p>
+				<h3>Year of Foundation</h3>
+			</div>
+			<div class="col-lg-3 col-sm-6 w3layouts_stats_left w3_counter_grid1">
+				<p class="counter">50</p>
+				<h3>Issued Loans</h3>
+			</div>
+			<div class="col-lg-3 col-sm-6 w3layouts_stats_left w3_counter_grid2">
+				<p class="counter">10</p>
+				<h3>Business Partners</h3>
+			</div>
+			<div class="col-lg-3 col-sm-6 w3layouts_stats_left w3_counter_grid2">
+				<p class="counter">50</p>
+				<h3>Happy Clients</h3>
+			</div>
+		</div>
+   </div>	
+</section>
+<!-- //stats -->
+
+{% endblock %}

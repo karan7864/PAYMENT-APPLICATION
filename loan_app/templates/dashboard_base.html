@@ -1,0 +1,245 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>LOANPAY</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+{% block css %}
+
+{% endblock %}
+
+<body id="page-top">
+
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <!-- Sidebar -->
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    
+                <!-- Sidebar - Brand -->
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'loan_app:dashboard'%}">
+                    <div class="sidebar-brand-text">LOANPAY</div>
+                </a>
+    
+                <!-- Divider -->
+                <hr class="sidebar-divider my-0">
+    
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'loan_app:dashboard'%}">
+                        <i class="fas fa-university"></i>
+                        <span>Dashboard</span></a>
+                </li>
+    
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+    
+                {% if user.is_superuser %}
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                        aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-rupee-sign"></i>
+                        <span>All Type of Loans</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="{% url 'loan_app:new_loan' %}">Add New Loan</a>
+    
+                            <a class="collapse-item" href="{% url 'loan_app:loan_list' %}">List of Availlable Loans</a>
+                        
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+                        aria-expanded="true" aria-controls="collapseThree">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Loan Applications</span>
+                    </a>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="{% url 'loan_app:loan_applications' %}">Pending</a>
+    
+                            <a class="collapse-item" href="{% url 'loan_app:approved_loan_application' %}">Approved</a>
+
+                            <a class="collapse-item" href="{% url 'loan_app:disbursed_loan_application' %}">Disbursed</a>
+
+                            <a class="collapse-item" href="{% url 'loan_app:rejected_loan_application' %}">Rejected</a>
+                        
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'loan_app:disbursed_loans_history' %}">
+                        <i class="fas fa-history"></i>
+                        <span>Disbursed Loans History</span></a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'loan_app:defaulters_list' %}">
+                        <i class="fas fa-user"></i>
+                        <span>Defaulters List</span></a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'loan_app:reminders_list' %}">
+                        <i class="fas fa-clock"></i>
+                        <span>EMI Due Reminders List</span></a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'loan_app:index' %}">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span></a>
+                </li>
+    
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'loan_app:logout' %}">
+                        <i class="fas fa-key"></i>
+                        <span>Logout</span></a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'loan_app:loan_list' %}">
+                        <i class="fas fa-hand-point-right"></i>
+                        <span>Apply For Loan</span></a>
+                </li>
+    
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                        aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-history"></i>
+                        <span>Loan History</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="{% url 'loan_app:approved_loan' %}">Approved Loans</a>
+    
+                            <a class="collapse-item" href="{% url 'loan_app:pending_loan' %}">Pending Loans</a>
+    
+                            <a class="collapse-item" href="{% url 'loan_app:rejected_loan' %}">Rejected Loans</a>
+
+                            <a class="collapse-item" href="{% url 'loan_app:disbursed_loan' %}">Disbursed Loans</a>
+                        </div>
+                    </div>
+                </li>
+    
+    
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'loan_app:loan_schedule_history' %}">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Payment Chart</span></a>
+                </li>
+    
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'loan_app:emi_calculator' %}">
+                        <i class="fas fa-calculator"></i>
+                        <span>EMI Calculator</span></a>
+                </li>
+    
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'loan_app:index' %}">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span></a>
+                </li>
+    
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'loan_app:logout' %}">
+                        <i class="fas fa-key"></i>
+                        <span>Logout</span></a>
+                </li>
+                {% endif %}
+    
+            </ul>
+            <!-- End of Sidebar -->
+
+                    <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-0 static-top shadow">
+
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><b>{{request.user.first_name}} {{request.user.last_name}}</b></span>
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+
+{% block body %}
+{% endblock %}
+
+</body>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'js/jquery-easing/jquery.easing.min.js' %}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel = "stylesheet" href = "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js">
+    </script>
+    <link rel = "stylesheet" href = "https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+    <script src = "https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js">
+    </script>
+    <script src = "https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js">
+    </script>
+    <script>
+        var message_ele = document.getElementById("message");
+        setTimeout(function() {
+            $(message_ele).fadeOut('slow');
+        }, 3000);
+
+    </script>
+
+
+
+{% block js %}
+{% endblock %}
+
+</html>

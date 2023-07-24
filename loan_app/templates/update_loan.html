@@ -1,0 +1,113 @@
+{% include 'dashboard_base.html' %}
+{% load static %}
+
+{% block css %}
+<style>
+.lead{
+    color:red;
+    font-weight: bold;
+}
+.value{
+    color:green;
+    font-weight: bold;
+}
+.custom{
+    color:darkblue;
+}
+.chart-container{
+    margin: auto;
+}
+
+</style>
+{% endblock %}
+
+{% block body %}
+
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-info alert-dismissible fade show" style="padding-top: 10px;" role="alert" id="message">
+        {{ message }}
+        <button type="button" class="close" style="padding-top: 10px;" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+{% endif %}
+
+<div class="container">
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between">
+            <h1 class="h3 mb-0 text-gray-800 mt-4 mb-4">Update Loan</h1>
+        </div>
+</div>
+
+
+<div class="container">
+    {% for i in data %}
+        <form action="{% url 'loan_app:update_loan' i.id %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+    
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" id="name"  placeholder="Name" required name="name" value="{{i.loan_name}}">
+            </div>
+    
+            <div class="form-group">
+                <label for="desc">Description</label>
+                <input type="text" class="form-control" id="desc"  placeholder="Description" required name="description" value="{{i.loan_desc}}">
+            </div>
+    
+            <div class="form-group">
+                <label for="amount">Maximum Amount</label>
+                <input type="number" class="form-control" id="amount" min="0" placeholder="Amount" required name="amount" value="{{i.max_loan_amount}}">
+            </div>
+    
+            <div class="form-group">
+                <label for="roi">Rate of Interest (P.A)</label>
+                <input type="number" class="form-control" id="roi"  placeholder="ROI %" required name="roi" min="0" step="0.1" value="{{i.loan_roi}}">
+            </div>
+    
+            <div class="form-group">
+                <label for="duration">Maximum Duration (Months)</label>
+                <input type="number" class="form-control" id="duration"  placeholder="Duration" required name="duration" min="0" value="{{i.max_loan_duration}}">
+            </div>
+    
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select name="category" id="category" class="form-control">
+                    {% if i.loan_category == "Secured" %}
+                    <option value="Secured" selected>Secured</option>
+                    <option value="Unsecured">Unsecured</option>
+                    {% else %}
+                    <option value="Unsecured" selected>Unsecured</option>
+                    <option value="Secured">Secured</option>
+                    {% endif %}
+                  </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="customFile">Upload Image</label>
+                <input type="file" class="form-control" id="customFile" name='loan_img'/>
+            </div>
+    
+            <div class="form-group form-check">
+                {% if i.need_security %}
+                <input class="form-check-input" type="checkbox" 
+                id="need_collateral" name="need_collateral" checked>
+                {% else %}
+                <input class="form-check-input" type="checkbox" id="need_collateral" name="need_collateral">
+                {% endif %}
+                <label class="form-check-label" for="need_collateral">
+                    Need Collateral
+                </label>
+
+            </div>
+          
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-danger">Reset</button>
+        </form>
+        {% endfor %}
+</div>
+
+
+{% endblock %}

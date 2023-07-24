@@ -1,0 +1,80 @@
+{% include 'dashboard_base.html' %}
+{% load static %}
+
+{% block css %}
+<style>
+.lead{
+    color:red;
+    font-weight: bold;
+}
+.value{
+    color:green;
+    font-weight: bold;
+}
+.custom{
+    color:darkblue;
+}
+.chart-container{
+    margin: auto;
+}
+
+</style>
+{% endblock %}
+
+{% block body %}
+
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-info alert-dismissible fade show" style="padding-top: 10px;" role="alert" id="message">
+        {{ message }}
+        <button type="button" class="close" style="padding-top: 10px;" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+{% endif %}
+
+<div class="container">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between">
+        <h1 class="h3 mb-0 text-gray-800 mt-4 mb-4">Approved Loans</h1>
+    </div>
+</div>
+
+    <div class="container">
+    <table class="table table-hover" id="myTable">
+        <thead>
+        <tr>
+            <th scope="col">Sno</th>
+            <th scope="col">Application ID</th>
+            <th scope="col">Loan Type</th>
+            <th scope="col">Loan Amount</th>
+            <th scope="col">Loan Duration</th>
+            <th scope="col">Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in approved_loans %}
+        <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{i.application_id}}</td>
+            <td>{{i.loan_applied_for.loan_name}}</td>
+            <td>{{i.expected_loan_amount}}</td>
+            <td>{{i.expected_loan_tenure}}</td>
+            <td style="color:rgba(11, 204, 11, 0.884);">Approved</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script>
+    $(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+</script>
+{% endblock %}

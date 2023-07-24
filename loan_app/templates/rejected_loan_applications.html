@@ -1,0 +1,418 @@
+{% include 'dashboard_base.html' %} 
+{% load static %} 
+{% block css %}
+<style>
+  .lead {
+    color: red;
+    font-weight: bold;
+  }
+  .value {
+    color: green;
+    font-weight: bold;
+  }
+  .custom {
+    color: darkblue;
+  }
+  .chart-container {
+    margin: auto;
+  }
+  .applicant_value {
+    font-weight: bold;
+    color: rgba(38, 38, 209, 0.795);
+    padding-left: 7px;
+  }
+  .applicant_header {
+    font-weight: bold;
+    color: rgb(216, 54, 54);
+  }
+  .application_value_2 {
+    color: rgb(22, 184, 30);
+    font-size: 18px;
+    padding-left: 10px;
+  }
+</style>
+{% endblock %} {% block body %} {% if messages %} {% for message in messages %}
+<div
+  class="alert alert-info alert-dismissible fade show"
+  style="padding-top: 10px"
+  role="alert"
+  id="message"
+>
+  {{ message }}
+  <button
+    type="button"
+    class="close"
+    style="padding-top: 10px"
+    data-dismiss="alert"
+    aria-label="Close"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endfor %} {% endif %}
+
+<div class="container">
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between">
+    <h1 class="h3 mb-0 text-gray-800 mt-4 mb-4">Rejected Applications</h1>
+  </div>
+</div>
+
+<div class="container">
+  <table class="table table-hover" id="myTable">
+    <thead>
+      <tr>
+        <th scope="col">Sno</th>
+        <th scope="col">Application ID</th>
+        <th scope="col">Loan Type</th>
+        <th scope="col">Loan Amount</th>
+        <th scope="col">Loan Duration</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in rejected_applications %}
+      <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <td>{{i.application_id}}</td>
+        <td>{{i.loan_applied_for.loan_name}}</td>
+        <td>{{i.expected_loan_amount}}</td>
+        <td>{{i.expected_loan_tenure}}</td>
+        <td>
+          <button
+            type="button"
+            class="btn btn-danger mr-2"
+            data-toggle="modal"
+            data-target="#see-list-{{i.id}}"
+          >
+            View
+          </button>
+
+          {% if i.reject_reason %}
+          <button
+            type="button"
+            class="btn btn-success mr-2"
+            data-toggle="modal"
+            data-target="#see-lists-{{i.id}}"
+          >
+            Remarks Submitted (View)
+          </button>
+          {% else %}
+          <button
+            type="button"
+            class="btn btn-danger mr-2"
+            data-toggle="modal"
+            data-target="#see-lists-{{i.id}}"
+          >
+            Enter Remarks
+          </button>
+          {% endif %}
+
+          <!-- Modal -->
+          <div
+            class="modal fade"
+            id="see-lists-{{i.id}}"
+            tabindex="-1"
+            aria-labelledby="exampsee-lists-{{i.id}}"
+            aria-hidden="true"
+          >
+            <div
+              class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"
+            >
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampsee-list-{{i.id}}">
+                    Application ID: {{i.application_id}}
+                  </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form
+                    method="POST"
+                    action="{% url 'loan_app:rejected_loan_application_reason' i.id %}"
+                  >
+                    {% csrf_token %}
+                    <div class="row">
+                      <div class="col-12 mb-12">
+                        <div class="form-group col-md-12">
+                          <label for="duration">Rejected Reason</label>
+                          {% if i.reject_reason %}
+                          <input
+                            class="form-control"
+                            id="rejecte_reason"
+                            value="{{i.reject_reason}}"
+                            readonly
+                            name="rejected_reason"
+                          />
+                          {% else %}
+                          <input
+                            class="form-control"
+                            id="rejecte_reason"
+                            name="rejected_reason"
+                            required
+                          />
+                          <button type="submit" class="btn btn-primary mt-4">
+                            Submit
+                          </button>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal -->
+          <div
+            class="modal fade"
+            id="see-list-{{i.id}}"
+            tabindex="-1"
+            aria-labelledby="exampsee-list-{{i.id}}"
+            aria-hidden="true"
+          >
+            <div
+              class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"
+            >
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampsee-list-{{i.id}}">
+                    Application ID: {{i.application_id}}
+                  </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-12 mb-3">
+                      <div class="row">
+                        <div class="col-6 applicant_header">
+                          Applicant Name:
+                          <span class="applicant_value">{{i.full_name}}</span>
+                        </div>
+
+                        <div class="col-6 applicant_header">
+                          Contact No:
+                          <span class="applicant_value">{{i.contact_no}}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                      <div class="row">
+                        <div class="col-6 applicant_header">
+                          PAN No:
+                          <span class="applicant_value">{{i.pan_no}}</span>
+                        </div>
+
+                        <div class="col-6 applicant_header">
+                          AADHAAR No:
+                          <span class="applicant_value">{{i.aadhar_no}}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                      <div class="row">
+                        <div class="col-12 applicant_header">
+                          Residential Address:
+                          <span class="applicant_value"
+                            >{{i.residential_address}}</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                      <div class="row">
+                        <div class="col-6 applicant_header">
+                          Service Type:
+                          <span class="applicant_value"
+                            >{{i.service_type}}</span
+                          >
+                        </div>
+
+                        <div class="col-6 applicant_header">
+                          Income:
+                          <span class="applicant_value">{{i.income}}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                      <div class="row">
+                        <div class="col-12 applicant_header">
+                          Official Address:
+                          <span class="applicant_value"
+                            >{{i.official_address}}</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                      <div class="row">
+                        <div class="col-6 applicant_header">
+                          Existing Loan:
+                          <span class="applicant_value"
+                            >{{i.existing_loan}}</span
+                          >
+                        </div>
+
+                        <div class="col-6 applicant_header">
+                          Loan Applied For:
+                          <span class="applicant_value"
+                            >{{i.loan_applied_for}}</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                      <div class="row">
+                        <div class="col-6 applicant_header">
+                          Loan Amount:
+                          <span class="applicant_value"
+                            >{{i.expected_loan_amount}}</span
+                          >
+                        </div>
+
+                        <div class="col-6 applicant_header">
+                          Loan Tenure:
+                          <span class="applicant_value"
+                            >{{i.expected_loan_tenure}}</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                      <div class="row">
+                        <div class="col-6 applicant_header">
+                          Collateral Name:
+                          <span class="applicant_value"
+                            >{{i.collateral_name}}</span
+                          >
+                        </div>
+
+                        <div class="col-6 applicant_header">
+                          Collateral Amount:
+                          <span class="applicant_value"
+                            >{{i.collateral_value}}</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                      <div class="row">
+                        <div class="col-6 applicant_header">
+                          Account Number:
+                          <span class="applicant_value"
+                            >{{i.account_number}}</span
+                          >
+                        </div>
+
+                        <div class="col-6 applicant_header">
+                          Bank Name:
+                          <span class="applicant_value">{{i.bank_name}}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                      <div class="row">
+                        <div class="col-6 applicant_header">
+                          Bank IFSCode:
+                          <span class="applicant_value"
+                            >{{i.bank_ifsc_code}}</span
+                          >
+                        </div>
+
+                        <div class="col-6 applicant_header">
+                          Application Created On:
+                          <span class="applicant_value">{{i.created_on}}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                      <div class="row">
+                        <div class="col-12 applicant_header">
+                          Remarks (If Any):
+                          <span class="applicant_value">{{i.remarks}}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                      <div class="row">
+                        <div class="col-4 applicant_header">
+                          Profile Photo:
+                          <a
+                            href="{{i.profile_photo}}"
+                            target="_blank"
+                            class="application_value_2"
+                            ><i class="fas fa-eye"></i
+                          ></a>
+                        </div>
+
+                        <div class="col-4 applicant_header">
+                          PAN Card:
+                          <a
+                            href="{{i.pan_image}}"
+                            target="_blank"
+                            class="application_value_2"
+                            ><i class="fas fa-eye"></i
+                          ></a>
+                        </div>
+
+                        <div class="col-4 applicant_header">
+                          AADHAR Card:
+                          <a
+                            href="{{i.aadhar_image}}"
+                            target="_blank"
+                            class="application_value_2"
+                            ><i class="fas fa-eye"></i
+                          ></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script>
+    $(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+</script>
+{% endblock %}
